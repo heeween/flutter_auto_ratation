@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_page_lifecycle/flutter_page_lifecycle.dart';
 import 'package:get/get.dart';
-
+import 'package:http/http.dart' as http;
 import 'orientation_page.dart';
 
 void main() {
@@ -25,6 +28,12 @@ class _MyAppState extends State<MyApp> {
     // TODO: implement initState
     super.initState();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    
+    http.get(Uri.parse("https://www.baidu.com")).timeout(Duration(milliseconds: 100)).then((response) => {
+      print(response)
+    }).catchError((error) => {
+      print(error)
+    });
   }
   // This widget is the root of your application.
   @override
@@ -48,6 +57,8 @@ class _MyAppState extends State<MyApp> {
               );
             },
             itemCount:routePages.length),
-        ));
+        ),
+      builder: EasyLoading.init(),
+    );
   }
 }
